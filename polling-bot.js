@@ -13,7 +13,7 @@ let lastUpdateId = 0;
 
 async function checkForMessages() {
   try {
-    const res = await fetch(\`\${API_URL}/getUpdates?offset=\${lastUpdateId + 1}\`);
+    const res = await fetch(`${API_URL}/getUpdates?offset=${lastUpdateId + 1}`);
     const data = await res.json();
 
     if (data.ok && data.result.length > 0) {
