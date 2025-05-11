@@ -1,10 +1,18 @@
-const http = require('http');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('helooo kar mikone!');
+const app = express();
+app.use(bodyParser.json());
+
+app.post('/webhook', (req, res) => {
+  const msg = req.body.message;
+  if (msg && msg.text) {
+    console.log('📩 پیام جدید از کاربر:', msg.text);
+  }
+  res.sendStatus(200);
 });
 
-server.listen(3000, () => {
-  console.log('Server running on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`ejra roye prst ${PORT} shod`);
 });
