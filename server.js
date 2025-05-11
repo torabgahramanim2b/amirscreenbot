@@ -7,10 +7,18 @@ const fs = require('fs');
 const app = express();
 const upload = multer({ dest: 'uploads/' });
 
-const TELEGRAM_TOKEN = '7708097244:AAH1hk1UP4SRNXhkXrpwG4ig9zZBXN3pnRE'; // ← توکن ربات
-const CHAT_ID = '8057556459'; // ← آیدی عددی تلگرام خودت
+const TELEGRAM_TOKEN = '7708097244:AAH1hk1UP4SRNXhkXrpwG4ig9zZBXN3pnRE'; // جایگزین شود
+const CHAT_ID = '8057556459'; // جایگزین شود
 
 app.use(express.json());
+
+app.post('/webhook', (req, res) => {
+  const msg = req.body.message;
+  if (msg && msg.text) {
+    console.log('📩 پیام جدید از تلگرام:', msg.text);
+  }
+  res.sendStatus(200);
+});
 
 app.post('/upload', upload.single('screenshot'), async (req, res) => {
   if (!req.file) {
@@ -28,19 +36,17 @@ app.post('/upload', upload.single('screenshot'), async (req, res) => {
     });
 
     const result = await response.json();
-    console.log('✅ Sent to Telegram:', result);
+    console.log('✅ عکس ارسال شد به تلگرام:', result);
 
-    // حذف فایل از سرور بعد از ارسال
-    fs.unlinkSync(req.file.path);
-
-    res.send('✅ Uploaded and sent to Telegram.');
+    fs.unlinkSync(req.file.path); // حذف عکس از سرور بعد از ارسال
+    res.send('✅ عکس آپلود و ارسال شد.');
   } catch (err) {
-    console.error('❌ Error sending to Telegram:', err);
-    res.status(500).send('Telegram send failed.');
+    console.error('❌ خطا در ارسال به تلگرام:', err);
+    res.status(500).send('ارسال به تلگرام ناموفق بود.');
   }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 سرور روی پورت ${PORT} اجرا شد`);
 });
