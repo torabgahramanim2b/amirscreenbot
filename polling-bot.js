@@ -26,14 +26,15 @@ async function checkForMessages() {
 
           // اینجا پیام رو بررسی کن، مثلاً پاسخ بده
           if (text.toLowerCase() === 'hi' || text === 'سلام') {
-            await fetch(\`\${API_URL}/sendMessage\`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                chat_id: user,
-                text: 'درود بر تو 🌟 من زنده‌ام!'
-              })
-            });
+        await fetch(`${API_URL}/sendMessage`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    chat_id: user,
+    text: 'درود بر تو 🌟 من زنده‌ام!'
+  })
+});
+
           }
         }
       }
